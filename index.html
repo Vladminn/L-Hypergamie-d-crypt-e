@@ -1,0 +1,927 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Hypergamie décryptée</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Concept : une page très aérée faite de bulles. Chaque bulle est un bouton qui s'ouvre en bulle de dialogue. Fond bleu-vert pâle, encre profonde, accent corail. */
+:root{
+  --bg:#F4F8F7; --bg-soft:#E8F1F0; --surface:#FFFFFF;
+  --ink:#12242B; --ink-2:#4A5E66; --line:#D3E2E1;
+  --accent:#E5566D; --accent-ink:#B42E47;
+  --sky:#CDE7F0; --blush:#FAD6DC; --butter:#F7E7B8; --mint:#D0EBDD;
+  --sheen:rgba(255,255,255,.75); --shadow:rgba(18,36,43,.38);
+  --display:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --body:"Figtree","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --mono:"DM Mono",ui-monospace,"SF Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1A1F; --bg-soft:#13252C; --surface:#172B33;
+    --ink:#EAF2F3; --ink-2:#A6BBC1; --line:#29434C;
+    --accent:#FF7D92; --accent-ink:#FF9CAC;
+    --sky:#1F4455; --blush:#53262F; --butter:#4A4220; --mint:#1F4838;
+    --sheen:rgba(255,255,255,.12); --shadow:rgba(0,0,0,.65);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1A1F; --bg-soft:#13252C; --surface:#172B33;
+  --ink:#EAF2F3; --ink-2:#A6BBC1; --line:#29434C;
+  --accent:#FF7D92; --accent-ink:#FF9CAC;
+  --sky:#1F4455; --blush:#53262F; --butter:#4A4220; --mint:#1F4838;
+  --sheen:rgba(255,255,255,.12); --shadow:rgba(0,0,0,.65);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:1.0625rem;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:clip}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:40}
+h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.08;letter-spacing:-.02em;margin:0;text-wrap:balance}
+p{margin:0}
+button{font:inherit;color:inherit}
+a{color:var(--accent-ink)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:10px}
+
+.wrap{width:100%;max-width:1120px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.narrow{max-width:62ch}
+section{padding-block:clamp(72px,12vw,168px);scroll-margin-top:60px}
+.eyebrow{font-family:var(--mono);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);display:flex;align-items:center;gap:.7rem}
+.eyebrow::before{content:"";width:28px;height:2px;background:var(--accent);border-radius:2px}
+.h2{font-size:clamp(2rem,5vw,3.6rem);margin-top:1.1rem}
+.lede{font-size:clamp(1.1rem,1.8vw,1.3rem);color:var(--ink-2);margin-top:1.6rem;max-width:58ch}
+.head{margin-bottom:clamp(40px,6vw,80px)}
+
+/* Navigation */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;gap:clamp(12px,3vw,32px);height:60px}
+.logo{font-family:var(--display);font-weight:700;font-size:1.1rem;letter-spacing:-.02em;text-decoration:none;color:var(--ink);display:flex;align-items:center;gap:.5rem;flex:none}
+.logo i{width:14px;height:14px;border-radius:50%;background:var(--accent);display:inline-block;box-shadow:9px 5px 0 -3px var(--sky)}
+.links{display:flex;gap:4px;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none;padding-block:4px}
+.links::-webkit-scrollbar{display:none}
+.links a{white-space:nowrap;text-decoration:none;color:var(--ink-2);font-size:.9rem;font-weight:500;padding:.4rem .8rem;border-radius:999px;transition:background .2s,color .2s}
+.links a:hover{background:var(--bg-soft);color:var(--ink)}
+.links a.on{background:var(--ink);color:var(--bg)}
+.icon-btn{flex:none;width:40px;height:40px;border-radius:50%;border:1.5px solid var(--line);background:var(--surface);cursor:pointer;display:grid;place-items:center;transition:transform .2s,border-color .2s}
+.icon-btn:hover{transform:rotate(18deg);border-color:var(--accent)}
+.icon-btn svg{width:18px;height:18px;fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round}
+.progress{position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--accent);transform-origin:left;transform:scaleX(0)}
+
+/* Boutons */
+.btn{display:inline-flex;align-items:center;gap:.6rem;padding:.95rem 1.5rem;border-radius:999px;font-weight:600;text-decoration:none;border:1.5px solid var(--ink);cursor:pointer;transition:transform .2s,background .2s,color .2s}
+.btn.solid{background:var(--ink);color:var(--bg)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn:hover{transform:translateY(-2px)}
+.btn.ghost:hover{background:var(--ink);color:var(--bg)}
+
+/* Hero */
+.hero{position:relative;overflow:clip;padding-block:clamp(56px,9vw,128px) clamp(72px,10vw,140px)}
+.hero::before,.hero::after{content:"";position:absolute;border-radius:50%;pointer-events:none;z-index:0}
+.hero::before{width:min(60vw,640px);aspect-ratio:1;right:-12%;top:-18%;background:radial-gradient(circle at 35% 35%,var(--sky),transparent 68%);opacity:.8}
+.hero::after{width:min(40vw,420px);aspect-ratio:1;left:-10%;bottom:-14%;background:radial-gradient(circle at 40% 40%,var(--blush),transparent 68%);opacity:.8}
+.hero .wrap{position:relative;z-index:1}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(40px,6vw,96px);align-items:center}
+.hero h1{font-size:clamp(2.7rem,7.2vw,6rem);font-weight:700;letter-spacing:-.04em;margin-top:1.4rem;line-height:.98}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero .lede{margin-top:2rem}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:2.6rem}
+.hint{font-family:var(--mono);font-size:.8rem;color:var(--ink-2);margin-top:2.2rem;display:flex;gap:.6rem;align-items:center}
+.hint span{width:10px;height:10px;border-radius:50%;background:var(--accent);animation:ping 2s ease-out infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 55%,transparent)}100%{box-shadow:0 0 0 14px transparent}}
+.cluster{position:relative;width:100%;max-width:470px;aspect-ratio:1;margin-inline:auto}
+.hb{position:absolute;width:var(--s);aspect-ratio:1;left:calc(var(--x) - var(--s)/2);top:calc(var(--y) - var(--s)/2);border-radius:50%;border:0;cursor:pointer;background:radial-gradient(circle at 30% 26%,var(--sheen),transparent 48%),var(--c);box-shadow:0 18px 32px -20px var(--shadow);display:grid;place-items:center;font-family:var(--display);font-weight:600;font-size:var(--fs,1.05rem);letter-spacing:-.01em;color:var(--ink);animation:float var(--d,7s) ease-in-out infinite alternate;transition:scale .25s,box-shadow .25s}
+.hb:hover{scale:1.06}
+.hb[aria-expanded="true"]{box-shadow:0 0 0 3px var(--ink),0 18px 32px -20px var(--shadow);scale:1.04}
+.dot{position:absolute;width:var(--s);aspect-ratio:1;left:calc(var(--x) - var(--s)/2);top:calc(var(--y) - var(--s)/2);border-radius:50%;background:var(--c);opacity:.9;animation:float var(--d,8s) ease-in-out infinite alternate}
+@keyframes float{from{translate:0 -7px}to{translate:0 7px}}
+
+/* Bulles de dialogue */
+.bubble{position:relative;margin-top:26px;background:var(--surface);border:1.5px solid var(--line);border-radius:28px;padding:clamp(22px,3.2vw,34px);box-shadow:0 24px 60px -34px var(--shadow)}
+.bubble.pop{animation:pop .32s cubic-bezier(.2,.8,.3,1)}
+@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+.tail{position:absolute;top:-9px;left:40px;width:16px;height:16px;background:var(--surface);border-left:1.5px solid var(--line);border-top:1.5px solid var(--line);transform:translateX(-50%) rotate(45deg);transition:left .25s}
+.bubble h3{font-size:clamp(1.3rem,2.4vw,1.7rem);padding-right:2.4rem}
+.bubble p{margin-top:.9rem;color:var(--ink-2)}
+.bubble p strong{color:var(--ink);font-weight:600}
+.bubble .ref{font-family:var(--mono);font-size:.76rem;line-height:1.6;color:var(--ink-2);opacity:.9;margin-top:1.1rem;padding-top:1rem;border-top:1px dashed var(--line)}
+.bx{position:absolute;top:14px;right:14px;width:36px;height:36px;border-radius:50%;border:1.5px solid var(--line);background:var(--bg);cursor:pointer;font-size:1.15rem;line-height:1;display:grid;place-items:center}
+.bx:hover{border-color:var(--accent)}
+.bank{display:none}
+.chips{display:flex;flex-wrap:wrap;gap:12px}
+.chip{font-weight:600;font-size:.97rem;padding:.75rem 1.2rem;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);cursor:pointer;transition:transform .2s,border-color .2s,background .2s,color .2s}
+.chip::after{content:"+";margin-left:.6rem;color:var(--accent);font-weight:700}
+.chip:hover{transform:translateY(-2px);border-color:var(--accent)}
+.chip[aria-expanded="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip[aria-expanded="true"]::after{content:"×";color:var(--bg)}
+
+/* Résumé */
+.strip{padding-block:0 clamp(40px,6vw,80px)}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(28px,5vw,72px);border-top:1px solid var(--line);padding-top:clamp(36px,5vw,64px)}
+.three h3{font-family:var(--mono);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink);font-weight:500}
+.three p{margin-top:1rem;color:var(--ink-2)}
+
+/* Définition */
+.def{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(32px,6vw,88px);align-items:center}
+.stage{background:var(--surface);border:1.5px solid var(--line);border-radius:36px;padding:clamp(12px,2vw,24px)}
+.stage svg{display:block;width:100%;height:auto}
+.rung{stroke:var(--line);stroke-width:1.5;stroke-dasharray:3 7;fill:none}
+.svg-t{fill:var(--ink-2);font:500 11px var(--mono)}
+.svg-l{fill:var(--ink);font:700 18px var(--display);text-anchor:middle}
+.pa{fill:var(--sky);stroke:var(--ink);stroke-width:1.5}
+.pb{fill:var(--blush);stroke:var(--ink);stroke-width:1.5}
+.link{stroke:var(--accent);stroke-width:2.5;fill:none;stroke-linecap:round}
+.mid{fill:var(--accent)}
+.seg{display:inline-flex;flex-wrap:wrap;gap:4px;padding:5px;background:var(--bg-soft);border-radius:999px}
+.seg button{border:0;background:transparent;padding:.6rem 1.1rem;border-radius:999px;font-weight:600;font-size:.95rem;cursor:pointer;color:var(--ink-2);transition:background .2s,color .2s}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.dir-text h3{font-size:clamp(1.6rem,3vw,2.2rem);margin-top:2rem}
+.dir-text p{margin-top:1rem;color:var(--ink-2)}
+.dir-text .ex{padding:1rem 1.2rem;border-radius:18px;background:var(--bg-soft);margin-top:1.4rem;font-size:.97rem}
+.more{margin-top:clamp(48px,7vw,96px)}
+.more .small{font-family:var(--mono);font-size:.8rem;color:var(--ink-2);margin-bottom:1.2rem}
+
+/* Capitaux */
+.soft{background:var(--bg-soft)}
+.orbs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,3vw,36px);max-width:760px;margin-inline:auto}
+.orb{width:100%;aspect-ratio:1;border-radius:50%;border:0;cursor:pointer;background:radial-gradient(circle at 30% 26%,var(--sheen),transparent 48%),var(--c);box-shadow:0 20px 36px -24px var(--shadow);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.25rem;padding:10%;text-align:center;transition:transform .25s,box-shadow .25s}
+.orb b{font-family:var(--display);font-size:clamp(.95rem,2.2vw,1.35rem);font-weight:600;letter-spacing:-.01em;line-height:1.1}
+.orb small{font-size:clamp(.68rem,1.4vw,.85rem);color:var(--ink-2);line-height:1.3}
+.orb:hover{transform:translateY(-6px)}
+.orb[aria-expanded="true"]{box-shadow:0 0 0 3px var(--ink),0 20px 36px -24px var(--shadow)}
+.orb:nth-child(1){--c:var(--butter)}.orb:nth-child(2){--c:var(--sky)}.orb:nth-child(3){--c:var(--mint)}
+.orb:nth-child(4){--c:var(--blush)}.orb:nth-child(5){--c:var(--surface)}.orb:nth-child(6){--c:var(--sky)}
+.orb:nth-child(5){border:1.5px solid var(--line)}
+.capwrap{max-width:760px;margin-inline:auto}
+
+/* Beauté */
+.rows{margin-top:clamp(56px,8vw,112px);border-top:1px solid var(--line)}
+.row{display:grid;grid-template-columns:minmax(0,1fr) 44px minmax(0,1.2fr);gap:clamp(12px,3vw,40px);align-items:center;padding-block:clamp(22px,3.5vw,40px);border-bottom:1px solid var(--line)}
+.row .q{font-family:var(--display);font-size:clamp(1.1rem,2.2vw,1.55rem);font-weight:500;color:var(--ink-2);text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--accent) 60%,transparent);text-decoration-thickness:2px}
+.row .arrow{font-size:1.4rem;color:var(--accent);text-align:center}
+.row .a{font-size:clamp(1.02rem,1.8vw,1.2rem)}
+.row .a strong{font-weight:600}
+.callout{margin-top:clamp(40px,6vw,72px);padding:clamp(24px,4vw,44px);border-radius:32px;background:var(--bg-soft);display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(16px,3vw,32px);align-items:start}
+.callout .o{width:56px;height:56px;border-radius:50%;background:radial-gradient(circle at 30% 26%,var(--sheen),transparent 50%),var(--butter);flex:none}
+.callout p{color:var(--ink-2)}
+.callout p+p{margin-top:.8rem}
+.callout strong{color:var(--ink)}
+
+/* Simulateur */
+.sim{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(32px,6vw,88px);align-items:center}
+.ctrl{margin-top:2rem}
+.ctrl label{display:flex;justify-content:space-between;font-weight:600;font-size:.95rem}
+.ctrl output{font-family:var(--mono);color:var(--accent-ink)}
+.ctrl input[type=range]{width:100%;margin-top:.9rem;accent-color:var(--accent);height:28px}
+.ends{display:flex;justify-content:space-between;font-size:.8rem;color:var(--ink-2);font-family:var(--mono)}
+.sim .cta{margin-top:1.6rem}
+.read{margin-top:1.8rem;padding:1.2rem 1.4rem;border-radius:22px;background:var(--surface);border:1.5px solid var(--line);font-size:.98rem;color:var(--ink-2)}
+.read b{color:var(--ink)}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:1rem}
+.stat{padding:1rem 1.1rem;border-radius:20px;background:var(--bg-soft)}
+.stat b{display:block;font-family:var(--display);font-size:1.7rem;font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums;color:var(--ink)}
+.stat span{font-size:.78rem;color:var(--ink-2);line-height:1.3;display:block}
+#mk .e{fill:none;stroke-linecap:round;transition:d .4s}
+.c1{fill:var(--sky);stroke:var(--ink);stroke-width:1.5}
+.c2{fill:var(--blush);stroke:var(--ink);stroke-width:1.5}
+.sc{font:600 12px var(--mono);fill:var(--ink);text-anchor:middle}
+.gl{font:500 12px var(--mono);fill:var(--ink-2);text-anchor:middle}
+.small-note{font-size:.82rem;color:var(--ink-2);margin-top:1rem;font-family:var(--mono);line-height:1.6}
+
+/* Expand rows */
+.xl{border-top:1px solid var(--line)}
+.xi{border-bottom:1px solid var(--line)}
+.xb{width:100%;display:flex;justify-content:space-between;align-items:center;gap:20px;text-align:left;background:none;border:0;padding:clamp(22px,3vw,34px) 0;cursor:pointer}
+.xb h3{font-size:clamp(1.2rem,2.4vw,1.7rem);font-weight:500}
+.xb .tag{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;color:var(--ink-2);display:block;margin-bottom:.5rem;text-transform:uppercase}
+.pm{flex:none;width:44px;height:44px;border-radius:50%;border:1.5px solid var(--line);background:var(--surface);position:relative;transition:transform .3s,background .3s,border-color .3s}
+.pm::before,.pm::after{content:"";position:absolute;left:50%;top:50%;width:14px;height:2px;background:var(--ink);transform:translate(-50%,-50%);transition:transform .3s,background .3s}
+.pm::after{transform:translate(-50%,-50%) rotate(90deg)}
+.xb:hover .pm{border-color:var(--accent)}
+.xb[aria-expanded="true"] .pm{background:var(--ink);border-color:var(--ink);transform:rotate(180deg)}
+.xb[aria-expanded="true"] .pm::before,.xb[aria-expanded="true"] .pm::after{background:var(--bg)}
+.xb[aria-expanded="true"] .pm::after{transform:translate(-50%,-50%) rotate(0)}
+.reveal{display:grid;grid-template-rows:0fr;transition:grid-template-rows .38s ease}
+.reveal.open{grid-template-rows:1fr}
+.reveal>div{overflow:hidden;visibility:hidden;transition:visibility 0s .38s}
+.reveal.open>div{visibility:visible;transition-delay:0s}
+.reveal .in{padding:0 0 clamp(24px,3.4vw,38px);max-width:68ch;color:var(--ink-2)}
+.reveal .in p+p{margin-top:.9rem}
+.reveal .in strong{color:var(--ink);font-weight:600}
+.reveal .in .ref{font-family:var(--mono);font-size:.76rem;line-height:1.6;margin-top:1.1rem}
+
+/* Chronologie */
+.tl{position:relative;padding-left:clamp(28px,5vw,48px);border-left:2px solid var(--line);margin-left:7px;max-width:820px}
+.ti{position:relative;padding-bottom:clamp(40px,7vw,80px)}
+.ti:last-child{padding-bottom:0}
+.ti::before{content:"";position:absolute;left:calc(-1 * clamp(28px,5vw,48px) - 9px);top:.45rem;width:16px;height:16px;border-radius:50%;background:var(--bg);border:2px solid var(--line);transition:background .4s,border-color .4s,transform .4s}
+.ti.on::before{background:var(--accent);border-color:var(--accent);transform:scale(1.25)}
+.ti .yr{font-family:var(--mono);font-size:.85rem;color:var(--accent-ink);letter-spacing:.06em}
+.ti h3{font-size:clamp(1.3rem,2.6vw,1.9rem);margin-top:.5rem}
+.ti p{margin-top:.8rem;color:var(--ink-2);max-width:56ch}
+
+/* Quiz */
+.quiz{max-width:760px;margin-inline:auto;background:var(--surface);border:1.5px solid var(--line);border-radius:36px;padding:clamp(24px,5vw,56px)}
+.qtop{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.8rem;color:var(--ink-2)}
+.qbar{height:6px;border-radius:6px;background:var(--bg-soft);margin-top:.9rem;overflow:hidden}
+.qbar i{display:block;height:100%;width:0;background:var(--accent);border-radius:6px;transition:width .4s}
+.qtext{font-family:var(--display);font-size:clamp(1.4rem,3vw,2rem);font-weight:500;line-height:1.25;margin-top:clamp(28px,4vw,44px);letter-spacing:-.015em;text-wrap:balance}
+.qpov{color:var(--ink-2);margin-top:.9rem;font-size:.98rem}
+.qbtns{display:flex;flex-wrap:wrap;gap:12px;margin-top:2rem}
+.qbtns .chip::after{content:none}
+.qbtns .chip.good{background:var(--mint);border-color:var(--ink);color:var(--ink)}
+.qbtns .chip.bad{background:var(--blush);border-color:var(--ink);color:var(--ink)}
+.qfb{margin-top:1.6rem;padding:1.2rem 1.4rem;border-radius:20px;background:var(--bg-soft);color:var(--ink-2);font-size:.98rem}
+.qfb strong{color:var(--ink)}
+.qnext{margin-top:1.4rem}
+.qend{text-align:center;padding-block:1rem}
+.qend .score{font-family:var(--display);font-size:clamp(3rem,10vw,5.5rem);font-weight:700;letter-spacing:-.04em;color:var(--accent)}
+
+/* Mythes */
+.myths{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,3vw,32px)}
+.myth{background:var(--surface);border:1.5px solid var(--line);border-radius:32px;padding:clamp(24px,3.4vw,40px);display:flex;flex-direction:column;gap:1.4rem}
+.myth .claim{font-family:var(--display);font-size:clamp(1.2rem,2.2vw,1.6rem);font-weight:500;line-height:1.25;letter-spacing:-.015em}
+.myth .claim::before{content:"«\00a0"}.myth .claim::after{content:"\00a0»"}
+.myth .go{align-self:flex-start;padding:.6rem 1.1rem;border-radius:999px;border:1.5px solid var(--line);background:var(--bg);cursor:pointer;font-weight:600;font-size:.92rem;transition:background .2s,color .2s,border-color .2s}
+.myth .go:hover{border-color:var(--accent)}
+.myth .go[aria-expanded="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.verdict{display:inline-block;padding:.3rem .85rem;border-radius:999px;font-family:var(--mono);font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);margin-bottom:.9rem}
+.v-no{background:var(--blush)}.v-mid{background:var(--butter)}.v-yes{background:var(--mint)}
+.myth .reveal .in{padding:0;color:var(--ink-2)}
+
+/* Sources + pied */
+.refs{columns:2;column-gap:clamp(32px,6vw,80px);font-size:.9rem;color:var(--ink-2);line-height:1.6;padding:0;margin:0;list-style:none}
+.refs li{break-inside:avoid;padding-bottom:1rem}
+.refs b{color:var(--ink);font-weight:600}
+footer{padding-block:clamp(56px,8vw,96px);border-top:1px solid var(--line)}
+footer .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,64px);align-items:start}
+footer p{color:var(--ink-2);font-size:.92rem}
+footer .big{font-family:var(--display);font-size:clamp(1.6rem,3.4vw,2.4rem);font-weight:600;letter-spacing:-.02em;color:var(--ink);line-height:1.15}
+
+/* Responsive */
+@media (max-width:900px){
+  .hero-grid,.def,.sim{grid-template-columns:minmax(0,1fr)}
+  .three{grid-template-columns:minmax(0,1fr)}
+  .myths{grid-template-columns:minmax(0,1fr)}
+  .refs{columns:1}
+  footer .wrap{grid-template-columns:minmax(0,1fr)}
+  .cluster{max-width:420px}
+}
+@media (max-width:620px){
+  .row{grid-template-columns:minmax(0,1fr);gap:8px}
+  .row .arrow{text-align:left;transform:rotate(90deg);width:24px}
+  .stats{grid-template-columns:minmax(0,1fr)}
+  .stat{display:flex;align-items:baseline;gap:12px}
+  .callout{grid-template-columns:minmax(0,1fr)}
+  .orbs{gap:10px}
+  .orb{padding:6%}
+  .orb small{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="#haut"><i></i>Hypergamie</a>
+    <nav class="links" aria-label="Sections">
+      <a href="#definition">Définition</a>
+      <a href="#capitaux">Capitaux</a>
+      <a href="#beaute">Beauté et statut</a>
+      <a href="#marche">Simulateur</a>
+      <a href="#etudes">Études</a>
+      <a href="#histoire">Histoire</a>
+      <a href="#quiz">Quiz</a>
+      <a href="#mythes">Mythes</a>
+      <a href="#faq">Questions</a>
+    </nav>
+    <button class="icon-btn" id="theme" aria-label="Changer de thème">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></svg>
+    </button>
+  </div>
+  <div class="progress" id="progress"></div>
+</header>
+
+<main id="haut">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Sociologie du couple</div>
+      <h1>Hyper<em>gamie</em></h1>
+      <p class="lede">Choisir un ou une partenaire mieux placé que soi. Par le statut, l'argent, le diplôme, parfois la beauté. Un mécanisme ancien, très étudié, et souvent caricaturé.</p>
+      <div class="cta">
+        <a class="btn solid" href="#definition">Explorer le sujet</a>
+        <a class="btn ghost" href="#marche">Lancer le simulateur</a>
+      </div>
+      <div class="hint"><span></span>Touche une bulle pour l'ouvrir</div>
+    </div>
+
+    <div data-group>
+      <div class="cluster">
+        <i class="dot" style="--x:10%;--y:22%;--s:9%;--c:var(--butter);--d:9s"></i>
+        <i class="dot" style="--x:66%;--y:91%;--s:11%;--c:var(--mint);--d:8s"></i>
+        <i class="dot" style="--x:94%;--y:80%;--s:8%;--c:var(--sky);--d:10s"></i>
+        <button class="hb" data-target="h-statut" aria-expanded="false" style="--x:50%;--y:24%;--s:40%;--c:var(--sky);--d:7s;--fs:clamp(1rem,2.6vw,1.4rem)">Statut</button>
+        <button class="hb" data-target="h-beaute" aria-expanded="false" style="--x:24%;--y:58%;--s:34%;--c:var(--blush);--d:8s;--fs:clamp(.92rem,2.3vw,1.25rem)">Beauté</button>
+        <button class="hb" data-target="h-argent" aria-expanded="false" style="--x:76%;--y:56%;--s:30%;--c:var(--butter);--d:6.5s;--fs:clamp(.88rem,2.1vw,1.15rem)">Argent</button>
+        <button class="hb" data-target="h-diplome" aria-expanded="false" style="--x:44%;--y:86%;--s:28%;--c:var(--mint);--d:9s;--fs:clamp(.82rem,1.9vw,1.05rem)">Diplôme</button>
+        <button class="hb" data-target="h-reseau" aria-expanded="false" style="--x:84%;--y:20%;--s:24%;--c:var(--surface);--d:7.5s;--fs:clamp(.78rem,1.8vw,1rem)">Réseau</button>
+      </div>
+      <div class="bubble" hidden aria-live="polite"><span class="tail"></span><button class="bx" aria-label="Fermer">×</button><div class="bubble-body"></div></div>
+      <div class="bank">
+        <div id="h-statut"><h3>Statut</h3><p>Ta place dans la hiérarchie sociale&nbsp;: profession, prestige, pouvoir de décision. C'est souvent la première chose qu'on imagine derrière le mot <strong>hypergamie</strong>.</p></div>
+        <div id="h-beaute"><h3>Beauté</h3><p>L'attrait physique. Les jugements se recoupent beaucoup d'une personne à l'autre, sans jamais être unanimes. Il peut compter dans l'échange, mais ne fait pas tout.</p><p>On y revient en détail plus bas, dans la section <a href="#beaute">Beauté et statut</a>.</p></div>
+        <div id="h-argent"><h3>Argent</h3><p>Revenus et patrimoine. C'est le capital le plus visible et celui dont on parle le plus. Dans les faits, les couples ont souvent des niveaux de vie proches, parce qu'ils se rencontrent dans les mêmes milieux.</p></div>
+        <div id="h-diplome"><h3>Diplôme</h3><p>Le niveau d'études est l'un des critères où la ressemblance entre conjoints est la plus nette. Dans de nombreux pays, les femmes sont désormais plus diplômées que les hommes&nbsp;: le sens habituel de l'écart s'inverse peu à peu.</p></div>
+        <div id="h-reseau"><h3>Réseau</h3><p>Pour sortir avec quelqu'un d'un autre milieu, encore faut-il le rencontrer. École, quartier, travail, amis&nbsp;: les lieux de rencontre font déjà un tri très fort, bien avant le moindre «&nbsp;choix&nbsp;».</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RÉSUMÉ -->
+<div class="strip">
+  <div class="wrap">
+    <div class="three">
+      <div><h3>Le mot</h3><p>Du grec <em>hyper</em>, au-dessus, et <em>gamos</em>, mariage. S'unir à quelqu'un d'un rang supérieur au sien.</p></div>
+      <div><h3>Les faits</h3><p>La plupart des couples se ressemblent par le diplôme, le milieu et l'âge. L'écart de rang existe, mais c'est l'exception.</p></div>
+      <div><h3>La beauté</h3><p>Tout le monde apprécie la beauté. Les études montrent surtout des couples assortis, et des compensations quand l'écart existe.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- DÉFINITION -->
+<section id="definition">
+  <div class="wrap">
+    <div class="head narrow">
+      <div class="eyebrow">Définition</div>
+      <h2 class="h2">Trois mots pour s'y retrouver</h2>
+      <p class="lede">Tout part d'une échelle. Les sociologues comparent la position des deux partenaires, puis nomment le résultat.</p>
+    </div>
+
+    <div class="def">
+      <div class="stage">
+        <svg viewBox="0 0 520 320" role="img" aria-label="Schéma de deux personnes placées sur une échelle de rang social">
+          <line class="rung" x1="30" x2="490" y1="70" y2="70"/>
+          <line class="rung" x1="30" x2="490" y1="160" y2="160"/>
+          <line class="rung" x1="30" x2="490" y1="250" y2="250"/>
+          <text class="svg-t" x="30" y="60">rang supérieur</text>
+          <text class="svg-t" x="30" y="150">rang intermédiaire</text>
+          <text class="svg-t" x="30" y="240">rang inférieur</text>
+          <path class="link" id="dlink" d="M0 0"/>
+          <circle class="mid" id="dmid" r="6"/>
+          <g id="ga"><circle class="pa" r="30"/><text class="svg-l" y="6">A</text></g>
+          <g id="gb"><circle class="pb" r="30"/><text class="svg-l" y="6">B</text></g>
+        </svg>
+      </div>
+      <div class="dir-text">
+        <div class="seg" role="group" aria-label="Type d'union">
+          <button data-d="hyper" aria-pressed="true">Hypergamie</button>
+          <button data-d="homo" aria-pressed="false">Homogamie</button>
+          <button data-d="hypo" aria-pressed="false">Hypogamie</button>
+        </div>
+        <h3 id="dt"></h3>
+        <p id="dp"></p>
+        <p class="ex" id="dx"></p>
+      </div>
+    </div>
+
+    <div class="more" data-group>
+      <div class="small">Quelques précisions utiles</div>
+      <div class="chips">
+        <button class="chip" data-target="d-mot" aria-expanded="false">D'où vient le mot&nbsp;?</button>
+        <button class="chip" data-target="d-grille" aria-expanded="false">De quelle grille parle-t-on&nbsp;?</button>
+        <button class="chip" data-target="d-mesal" aria-expanded="false">Mésalliance</button>
+        <button class="chip" data-target="d-masc" aria-expanded="false">Hypergamie masculine</button>
+      </div>
+      <div class="bubble" hidden aria-live="polite"><span class="tail"></span><button class="bx" aria-label="Fermer">×</button><div class="bubble-body"></div></div>
+      <div class="bank">
+        <div id="d-mot"><h3>D'où vient le mot&nbsp;?</h3><p>Il associe le grec <strong>hyper</strong> (au-dessus) et <strong>gamos</strong> (mariage). Au XIXᵉ siècle, des juristes et des ethnologues l'emploient pour décrire les systèmes de castes en Inde, où une femme pouvait épouser un homme de caste supérieure, alors que l'inverse était mal vu.</p><p>Le terme est ensuite passé en sociologie générale pour décrire n'importe quel système où l'on «&nbsp;monte&nbsp;» en s'unissant.</p></div>
+        <div id="d-grille"><h3>De quelle grille parle-t-on&nbsp;?</h3><p>Le sens d'une union dépend du critère retenu&nbsp;: <strong>diplôme, revenu, profession, origine familiale, patrimoine, âge</strong>. Un même couple peut être hypergame sur une grille et homogame sur une autre.</p><p>Quand on lit «&nbsp;hypergamie&nbsp;» quelque part, la première question à poser est donc&nbsp;: mesurée sur quoi&nbsp;?</p></div>
+        <div id="d-mesal"><h3>Mésalliance</h3><p>Mot ancien pour une union jugée indigne de son rang, vue par la famille du partenaire le mieux placé. C'est le miroir social de l'hypergamie&nbsp;: ce que l'un vit comme une ascension, l'autre famille le vit comme une déchéance.</p></div>
+        <div id="d-masc"><h3>Hypergamie masculine</h3><p>Le schéma n'est pas réservé aux femmes. Dans la littérature du XIXᵉ siècle, <strong>Julien Sorel</strong> (<em>Le Rouge et le Noir</em>) et <strong>Georges Duroy</strong> (<em>Bel-Ami</em>) montent tous deux par leurs liaisons et leurs mariages.</p><p>Les modèles classiques ont surtout décrit des femmes qui épousent un homme de rang supérieur, parce que leur accès au revenu était limité. Quand cet accès change, le schéma change aussi.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CAPITAUX -->
+<section id="capitaux" class="soft">
+  <div class="wrap">
+    <div class="head narrow">
+      <div class="eyebrow">Ce qu'on échange</div>
+      <h2 class="h2">Monter, mais à quoi&nbsp;?</h2>
+      <p class="lede">Le rang ne se résume pas à l'argent. Le sociologue Pierre Bourdieu distingue plusieurs formes de capital. Chacune peut entrer dans l'échange.</p>
+    </div>
+
+    <div class="capwrap" data-group>
+      <div class="orbs">
+        <button class="orb" data-target="c-eco" aria-expanded="false"><b>Économique</b><small>revenus, patrimoine</small></button>
+        <button class="orb" data-target="c-cul" aria-expanded="false"><b>Culturel</b><small>diplômes, goûts, savoirs</small></button>
+        <button class="orb" data-target="c-soc" aria-expanded="false"><b>Social</b><small>relations, réseau</small></button>
+        <button class="orb" data-target="c-sym" aria-expanded="false"><b>Symbolique</b><small>prestige, réputation</small></button>
+        <button class="orb" data-target="c-phy" aria-expanded="false"><b>Physique</b><small>beauté, présentation</small></button>
+        <button class="orb" data-target="c-age" aria-expanded="false"><b>Âge</b><small>écart entre partenaires</small></button>
+      </div>
+      <div class="bubble" hidden aria-live="polite"><span class="tail"></span><button class="bx" aria-label="Fermer">×</button><div class="bubble-body"></div></div>
+      <div class="bank">
+        <div id="c-eco"><h3>Capital économique</h3><p>Revenus, épargne, patrimoine, héritage attendu. C'est le plus mesurable, donc le plus étudié.</p><p>Une étude américaine de 2015 (Bertrand, Kamenica et Pan) montre qu'aux États-Unis, les couples où la femme gagnerait davantage que l'homme se forment moins souvent qu'on ne l'attendrait&nbsp;: la norme du «&nbsp;mari qui gagne plus&nbsp;» pèse encore.</p><p class="ref">Bertrand, Kamenica &amp; Pan (2015), Quarterly Journal of Economics.</p></div>
+        <div id="c-cul"><h3>Capital culturel</h3><p>Diplômes, aisance à l'oral, goûts littéraires ou musicaux, façon de se tenir. Il s'hérite en grande partie de la famille.</p><p>C'est le terrain de l'<strong>homogamie</strong> par excellence&nbsp;: on rencontre ses partenaires à l'école, à l'université, dans des lieux où tout le monde partage à peu près les mêmes codes.</p></div>
+        <div id="c-soc"><h3>Capital social</h3><p>Le carnet d'adresses&nbsp;: les gens qu'on connaît, ceux qui vous recommandent, ceux qui vous présentent quelqu'un. Se mettre en couple avec une personne bien entourée ouvre l'accès à ses cercles.</p></div>
+        <div id="c-sym"><h3>Capital symbolique</h3><p>Le prestige, le nom, la réputation. Il compte surtout quand il est reconnu par les autres. Autrefois, un nom de famille pouvait valoir une dot.</p></div>
+        <div id="c-phy"><h3>Capital physique</h3><p>Beauté, charme, façon de se présenter. La sociologue Catherine Hakim a proposé le terme de «&nbsp;capital érotique&nbsp;» pour l'inclure parmi les ressources sociales. L'idée est discutée&nbsp;: certains chercheurs la jugent trop vague pour être mesurée proprement.</p><p>Voir la section <a href="#beaute">Beauté et statut</a> pour ce que les études ont réellement trouvé.</p><p class="ref">Hakim (2010), European Sociological Review.</p></div>
+        <div id="c-age"><h3>Âge</h3><p>L'écart d'âge entre partenaires entre dans l'échange, avec de fortes variations selon les cultures et les époques. Dans beaucoup de sociétés, l'homme est en moyenne un peu plus âgé que sa conjointe.</p><p>L'âge a aussi un effet sur les autres capitaux&nbsp;: on a plus de revenus et de relations à 40 ans qu'à 22.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BEAUTÉ ET STATUT -->
+<section id="beaute">
+  <div class="wrap">
+    <div class="head narrow">
+      <div class="eyebrow">Beauté et statut</div>
+      <h2 class="h2">Et si la beauté était une monnaie&nbsp;?</h2>
+      <p class="lede">L'idée circule beaucoup&nbsp;: les personnes moins attirantes chercheraient à «&nbsp;s'élever&nbsp;» en séduisant plus beau qu'elles. Les chercheurs testent cela depuis les années 1960. Le tableau est plus subtil, et plus intéressant.</p>
+    </div>
+
+    <div data-group>
+      <div class="chips">
+        <button class="chip" data-target="b-elder" aria-expanded="false">L'échange beauté contre statut</button>
+        <button class="chip" data-target="b-match" aria-expanded="false">L'hypothèse d'appariement</button>
+        <button class="chip" data-target="b-all" aria-expanded="false">Tout le monde vise haut</button>
+        <button class="chip" data-target="b-peur" aria-expanded="false">La peur du refus</button>
+        <button class="chip" data-target="b-halo" aria-expanded="false">L'effet de halo</button>
+        <button class="chip" data-target="b-prime" aria-expanded="false">La prime de beauté</button>
+      </div>
+      <div class="bubble" hidden aria-live="polite"><span class="tail"></span><button class="bx" aria-label="Fermer">×</button><div class="bubble-body"></div></div>
+      <div class="bank">
+        <div id="b-elder"><h3>L'échange beauté contre statut</h3><p>En 1969, le sociologue Glen Elder observe, dans un échantillon américain, que les femmes jugées plus attirantes épousaient plus souvent un homme de statut plus élevé que celui de leur famille d'origine.</p><p>C'est le modèle classique de l'<strong>échange</strong>&nbsp;: chacun apporte ce qu'il a, l'un de la beauté, l'autre du statut. Les travaux suivants confirment l'idée, avec des effets variables selon les pays et les époques.</p><p class="ref">Elder (1969), American Sociological Review. Becker (1973), Journal of Political Economy.</p></div>
+        <div id="b-match"><h3>L'hypothèse d'appariement</h3><p>Dans les années 1960, la psychologue Elaine Walster organise un bal où les couples sont formés au hasard. Résultat&nbsp;: tout le monde apprécie davantage les partenaires attirants, quelle que soit sa propre apparence.</p><p>Mais dans les vraies décisions, où l'on risque un refus, les gens se tournent plutôt vers des personnes de <strong>niveau d'attrait comparable</strong> au leur. C'est l'hypothèse d'appariement. Une méta-analyse de 1988 trouve bien une corrélation positive nette entre l'attrait des deux membres d'un couple.</p><p class="ref">Walster et al. (1966)&nbsp;; Berscheid et al. (1971)&nbsp;; Feingold (1988), Psychological Bulletin.</p></div>
+        <div id="b-all"><h3>Tout le monde vise haut</h3><p>Une grande étude sur un site de rencontres américain montre que les préférences sont très semblables d'un utilisateur à l'autre&nbsp;: tout le monde écrit surtout aux personnes les plus attirantes.</p><p>Mais les plus recherchés reçoivent trop de messages, répondent à peu, et choisissent. Chacun finit donc avec quelqu'un de niveau proche du sien. <strong>Viser plus haut n'est pas le propre des moins attirants.</strong> C'est un comportement général, que la concurrence corrige.</p><p class="ref">Hitsch, Hortaçsu &amp; Ariely (2010), American Economic Review.</p></div>
+        <div id="b-peur"><h3>La peur du refus</h3><p>Écrire à quelqu'un de très recherché, c'est accepter un risque de silence ou de rejet. Beaucoup de personnes ajustent leurs ambitions en conséquence, souvent sans s'en rendre compte.</p><p>Ce frein explique une partie de l'appariement&nbsp;: l'autosélection, avant même le choix de l'autre.</p></div>
+        <div id="b-halo"><h3>L'effet de halo</h3><p>En 1972, des psychologues montrent que les personnes jugées belles se voient attribuer plus de qualités&nbsp;: plus sympathiques, plus compétentes, plus heureuses. C'est le «&nbsp;ce qui est beau est bien&nbsp;».</p><p>Ce biais explique en partie pourquoi la beauté peut servir de ressource, y compris hors du couple.</p><p class="ref">Dion, Berscheid &amp; Walster (1972), Journal of Personality and Social Psychology.</p></div>
+        <div id="b-prime"><h3>La prime de beauté</h3><p>Plusieurs études sur le marché du travail (dont celle de Hamermesh et Biddle en 1994) trouvent que les personnes jugées plus attirantes gagnent en moyenne un peu plus. L'effet est modéré, mais mesurable.</p><p>La beauté peut donc agir sur le statut par d'autres voies que le couple.</p><p class="ref">Hamermesh &amp; Biddle (1994), American Economic Review.</p></div>
+      </div>
+    </div>
+
+    <div class="rows">
+      <div class="row"><p class="q">Les moins attirants visent plus haut.</p><span class="arrow">→</span><p class="a"><strong>Presque tout le monde vise haut</strong>, quel que soit son propre attrait.</p></div>
+      <div class="row"><p class="q">Chacun obtient ce qu'il vise.</p><span class="arrow">→</span><p class="a">Les plus recherchés choisissent. <strong>Les couples finissent plutôt assortis.</strong></p></div>
+      <div class="row"><p class="q">Le physique décide de tout.</p><span class="arrow">→</span><p class="a">Il pèse, et il <strong>s'échange</strong> parfois contre d'autres atouts&nbsp;: statut, revenu, qualités personnelles.</p></div>
+    </div>
+
+    <div class="callout">
+      <div class="o" aria-hidden="true"></div>
+      <div>
+        <p><strong>«&nbsp;Beau&nbsp;» et «&nbsp;moche&nbsp;» sont des raccourcis.</strong> L'attrait est un continuum, que chacun évalue avec ses propres goûts. Les jugements se recoupent beaucoup, sans jamais être identiques.</p>
+        <p>Et dans une relation qui dure, on ne se choisit pas seulement sur un portrait&nbsp;: humour, gentillesse, projets communs et valeurs entrent aussi en jeu.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SIMULATEUR -->
+<section id="marche" class="soft">
+  <div class="wrap">
+    <div class="head narrow">
+      <div class="eyebrow">Simulateur</div>
+      <h2 class="h2">Un petit marché du couple</h2>
+      <p class="lede">Deux groupes de huit personnes. Chacune a une «&nbsp;valeur&nbsp;» qui mélange beauté, statut et ressources. Chacun classe l'autre groupe selon ses goûts, puis l'algorithme de Gale et Shapley forme des couples stables.</p>
+    </div>
+
+    <div class="sim">
+      <div>
+        <div class="ctrl">
+          <label for="sigma">Diversité des goûts <output id="sv">0</output></label>
+          <input id="sigma" type="range" min="0" max="40" value="0" step="1">
+          <div class="ends"><span>Tout le monde veut les mêmes</span><span>Goûts très variés</span></div>
+        </div>
+        <div class="cta">
+          <button class="btn solid" id="redo">Nouveau tirage</button>
+        </div>
+        <div class="read" id="simread"></div>
+        <div class="stats">
+          <div class="stat"><b id="s1">–</b><span>écart moyen de valeur dans un couple</span></div>
+          <div class="stat"><b id="s2">–</b><span>couples où A obtient plus attirant</span></div>
+          <div class="stat"><b id="s3">–</b><span>couples où A obtient moins attirant</span></div>
+        </div>
+        <p class="small-note">Modèle pédagogique très simplifié. Il ne mesure personne et ne prédit aucun couple réel.</p>
+      </div>
+      <div class="stage">
+        <svg viewBox="0 0 420 400" id="mk" role="img" aria-label="Appariement entre deux groupes de huit personnes classées par valeur"></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ÉTUDES -->
+<section id="etudes">
+  <div class="wrap">
+    <div class="head narrow">
+      <div class="eyebrow">Ce que les études ont mesuré</div>
+      <h2 class="h2">Six travaux à connaître</h2>
+      <p class="lede">Chaque ligne s'ouvre. Les références complètes se trouvent tout en bas de la page.</p>
+    </div>
+    <div class="xl">
+      <div class="xi"><button class="xb" aria-expanded="false"><span><span class="tag">1989 · 37 échantillons, 33 pays</span><h3>Ce que chacun dit chercher</h3></span><span class="pm"></span></button>
+        <div class="reveal"><div><div class="in"><p>David Buss interroge plus de 10 000 personnes dans 37 échantillons. Hommes et femmes placent très haut l'amour et la gentillesse. En moyenne, les femmes accordent un peu plus de poids aux perspectives financières, les hommes à l'apparence.</p><p>Les écarts varient fortement d'un pays à l'autre. Eagly et Wood (1999) les relient à l'inégalité d'accès aux revenus&nbsp;: plus une société est égalitaire, plus les écarts se réduisent.</p><p class="ref">Buss (1989), Behavioral and Brain Sciences. Eagly &amp; Wood (1999), American Psychologist.</p></div></div></div></div>
+      <div class="xi"><button class="xb" aria-expanded="false"><span><span class="tag">2008 · speed-dating</span><h3>Ce qu'on dit chercher n'est pas ce qu'on choisit</h3></span><span class="pm"></span></button>
+        <div class="reveal"><div><div class="in"><p>Paul Eastwick et Eli Finkel comparent les préférences déclarées avant des rencontres express et les réactions réelles. Hommes et femmes se décrivent différemment, mais <strong>face à une vraie personne, ces différences disparaissent</strong> en grande partie.</p><p>Ce qu'on affirme chercher prédit mal ce qui nous attire sur le moment.</p><p class="ref">Eastwick &amp; Finkel (2008), Journal of Personality and Social Psychology.</p></div></div></div></div>
+      <div class="xi"><button class="xb" aria-expanded="false"><span><span class="tag">2010 · site de rencontres</span><h3>Tout le monde veut les mêmes, et pourtant on s'apparie</h3></span><span class="pm"></span></button>
+        <div class="reveal"><div><div class="in"><p>Günter Hitsch, Ali Hortaçsu et Dan Ariely analysent des milliers d'utilisateurs. Les préférences sont proches d'une personne à l'autre, mais les couples formés se ressemblent par l'attrait, l'âge, le niveau d'études ou la taille.</p><p>La concurrence entre prétendants fait le tri, comme dans le simulateur ci-dessus.</p><p class="ref">Hitsch, Hortaçsu &amp; Ariely (2010), American Economic Review.</p></div></div></div></div>
+      <div class="xi"><button class="xb" aria-expanded="false"><span><span class="tag">1988 · méta-analyse</span><h3>Des couples qui se ressemblent par l'attrait</h3></span><span class="pm"></span></button>
+        <div class="reveal"><div><div class="in"><p>Alan Feingold regroupe des dizaines d'études et trouve une corrélation positive entre l'attrait des deux membres d'un couple. Ce n'est pas une règle absolue, mais une tendance nette.</p><p>Les études regroupées sont surtout nord-américaines&nbsp;: le résultat ne se transpose pas automatiquement à tous les pays.</p><p class="ref">Feingold (1988), Psychological Bulletin.</p></div></div></div></div>
+      <div class="xi"><button class="xb" aria-expanded="false"><span><span class="tag">2012 et 2016 · démographie</span><h3>La fin de l'hypergamie par le diplôme&nbsp;?</h3></span><span class="pm"></span></button>
+        <div class="reveal"><div><div class="in"><p>Albert Esteve et ses collègues montrent que, dans de nombreux pays, les femmes sont désormais aussi diplômées ou plus que les hommes. Du coup, l'<strong>hypergamie éducative féminine</strong> recule et l'homogamie progresse. L'hypogamie devient plus fréquente que par le passé.</p><p>Les normes ne suivent pas toujours à la même vitesse&nbsp;: l'écart de revenu, lui, reste plus tenace.</p><p class="ref">Esteve, García-Román &amp; Permanyer (2012)&nbsp;; Esteve et al. (2016), Population and Development Review.</p></div></div></div></div>
+      <div class="xi"><button class="xb" aria-expanded="false"><span><span class="tag">2006 · France</span><h3>Se rencontrer, c'est déjà trier</h3></span><span class="pm"></span></button>
+        <div class="reveal"><div><div class="in"><p>Michel Bozon et François Héran, à l'Ined, décrivent la formation des couples en France. Les rencontres se font dans des lieux socialement marqués, et les conjoints se ressemblent fortement par le milieu et le diplôme.</p><p>Pierre Bourdieu insiste de son côté sur le fait que les goûts, y compris amoureux, sont socialement construits&nbsp;: on aime en partie ce qu'on a appris à aimer, parmi les gens qu'on côtoie.</p><p class="ref">Bozon &amp; Héran (2006), La formation du couple, La Découverte. Bourdieu (2002), Le Bal des célibataires, Seuil.</p></div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- HISTOIRE -->
+<section id="histoire" class="soft">
+  <div class="wrap">
+    <div class="head narrow">
+      <div class="eyebrow">Histoire</div>
+      <h2 class="h2">Du système de castes aux applis</h2>
+      <p class="lede">Faire défiler la page suffit&nbsp;: la frise s'allume au fur et à mesure.</p>
+    </div>
+    <div class="tl">
+      <div class="ti"><div class="yr">Textes anciens</div><h3>Les castes de l'Inde</h3><p>Les traités juridiques classent les unions selon la caste. Épouser une personne de caste inférieure pour l'homme est toléré. L'inverse est condamné. Le mot «&nbsp;hypergamie&nbsp;» naîtra de ces descriptions.</p></div>
+      <div class="ti"><div class="yr">Moyen Âge à XVIIIᵉ</div><h3>Alliances et dots</h3><p>En Europe, le mariage unit d'abord deux familles, deux patrimoines, deux titres. La dot compense un écart de rang. L'union jugée trop inégale s'appelle une mésalliance.</p></div>
+      <div class="ti"><div class="yr">XIXᵉ siècle</div><h3>Le roman de l'ascension</h3><p>Stendhal, Balzac, Maupassant mettent en scène des jeunes gens ambitieux qui grimpent par les salons, les liaisons ou le mariage. En parallèle, l'idéal du mariage d'amour progresse.</p></div>
+      <div class="ti"><div class="yr">1962 à 1974</div><h3>Les premiers modèles</h3><p>Gale et Shapley formalisent les mariages stables (1962). Walster teste l'appariement par l'attrait (1966). Elder décrit l'échange beauté contre statut (1969). Becker applique l'économie au mariage (1973).</p></div>
+      <div class="ti"><div class="yr">2002 à 2006</div><h3>La sociologie française</h3><p>Bourdieu publie son enquête sur les célibataires du Béarn. Bozon et Héran documentent l'homogamie dans les couples français.</p></div>
+      <div class="ti"><div class="yr">2010 à 2016</div><h3>Applis et renversement</h3><p>Les sites et applications de rencontre donnent des données à grande échelle. Shapley et Roth reçoivent le prix Nobel d'économie (2012) pour leurs travaux sur l'appariement. Les démographes constatent que les femmes dépassent les hommes par le diplôme dans de nombreux pays.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CULTURE -->
+<section id="culture">
+  <div class="wrap">
+    <div class="head narrow">
+      <div class="eyebrow">Dans la culture</div>
+      <h2 class="h2">Quatre récits d'ascension</h2>
+      <p class="lede">Contes et romans ont mis l'hypergamie en scène bien avant la sociologie.</p>
+    </div>
+    <div data-group>
+      <div class="chips">
+        <button class="chip" data-target="k-cend" aria-expanded="false">Cendrillon</button>
+        <button class="chip" data-target="k-aust" aria-expanded="false">Orgueil et Préjugés</button>
+        <button class="chip" data-target="k-sten" aria-expanded="false">Le Rouge et le Noir</button>
+        <button class="chip" data-target="k-maup" aria-expanded="false">Bel-Ami</button>
+      </div>
+      <div class="bubble" hidden aria-live="polite"><span class="tail"></span><button class="bx" aria-label="Fermer">×</button><div class="bubble-body"></div></div>
+      <div class="bank">
+        <div id="k-cend"><h3>Cendrillon (Perrault, 1697)</h3><p>Une jeune fille humiliée par sa belle-famille épouse le prince. Dans le conte, la <strong>beauté</strong> (et la pantoufle qui ne va qu'à elle) fait office de passeport social.</p><p>C'est le récit fondateur de l'hypergamie féminine par la beauté, et la source de bien des clichés.</p></div>
+        <div id="k-aust"><h3>Orgueil et Préjugés (Austen, 1813)</h3><p>Dans l'Angleterre du roman, une femme sans héritage n'a presque pas d'autre voie que le mariage pour se garantir un avenir. Charlotte Lucas épouse sans enthousiasme un homme peu aimable, par <strong>sécurité</strong>.</p><p>Austen montre un monde où l'hypergamie est une nécessité économique plus qu'une ambition.</p></div>
+        <div id="k-sten"><h3>Le Rouge et le Noir (Stendhal, 1830)</h3><p>Julien Sorel, fils de charpentier, veut sortir de sa condition. Il se sert de sa culture, de son charme et de ses liaisons pour monter dans la société.</p><p>Un exemple d'<strong>hypergamie masculine</strong>, avec un prix émotionnel élevé pour le héros.</p></div>
+        <div id="k-maup"><h3>Bel-Ami (Maupassant, 1885)</h3><p>Georges Duroy, ancien sous-officier sans fortune, gravit tous les échelons du Paris des journaux et de la finance, de liaison en mariage. Son principal atout&nbsp;: une <strong>belle apparence</strong> et un art de plaire.</p><p>Maupassant en fait un portrait sans indulgence, qui inverse le cliché de Cendrillon.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz" class="soft">
+  <div class="wrap">
+    <div class="head narrow">
+      <div class="eyebrow">À toi de jouer</div>
+      <h2 class="h2">Hypergamie, homogamie ou hypogamie&nbsp;?</h2>
+      <p class="lede">Six situations. À chaque fois, on se place du point de vue de la première personne citée.</p>
+    </div>
+    <div class="quiz" id="quizbox"></div>
+  </div>
+</section>
+
+<!-- MYTHES -->
+<section id="mythes">
+  <div class="wrap">
+    <div class="head narrow">
+      <div class="eyebrow">Mythes et réalités</div>
+      <h2 class="h2">Six idées reçues, une par une</h2>
+      <p class="lede">Chaque carte donne un verdict, puis les raisons.</p>
+    </div>
+    <div class="myths">
+      <article class="myth"><p class="claim">Les personnes moins attirantes cherchent systématiquement à s'élever en sortant avec plus beau qu'elles.</p>
+        <button class="go" aria-expanded="false">Voir le verdict</button>
+        <div class="reveal"><div><div class="in"><span class="verdict v-no">Faux comme règle générale</span><p>Presque tout le monde préfère des partenaires attirants, quel que soit son propre physique. Ce sont les rapports de force du marché qui trient, et les couples finissent plutôt assortis.</p><p>Les cas où l'écart est visible marquent les esprits&nbsp;: on remarque le couple «&nbsp;dépareillé&nbsp;», pas les dix couples ordinaires.</p></div></div></div></article>
+      <article class="myth"><p class="claim">L'hypergamie ne concerne que les femmes.</p>
+        <button class="go" aria-expanded="false">Voir le verdict</button>
+        <div class="reveal"><div><div class="in"><span class="verdict v-no">Faux</span><p>Les modèles classiques ont surtout décrit des femmes qui épousent plus haut, faute d'accès aux revenus. Les hommes aussi peuvent monter par l'union&nbsp;: la littérature du XIXᵉ siècle en regorge, et le schéma existe encore aujourd'hui.</p></div></div></div></article>
+      <article class="myth"><p class="claim">L'hypergamie est universelle et ne change jamais.</p>
+        <button class="go" aria-expanded="false">Voir le verdict</button>
+        <div class="reveal"><div><div class="in"><span class="verdict v-mid">Nuancé</span><p>Les préférences déclarées présentent des régularités dans beaucoup de cultures, mais leur force varie beaucoup. Et le schéma bouge&nbsp;: quand les femmes deviennent plus diplômées, l'hypergamie par le diplôme recule.</p></div></div></div></article>
+      <article class="myth"><p class="claim">Aimer et calculer s'excluent.</p>
+        <button class="go" aria-expanded="false">Voir le verdict</button>
+        <div class="reveal"><div><div class="in"><span class="verdict v-mid">Nuancé</span><p>La plupart des unions entre milieux proches se font sans aucun calcul conscient&nbsp;: on tombe amoureux de personnes rencontrées dans les mêmes lieux, qui partagent les mêmes codes. Bourdieu rappelle que les goûts, y compris amoureux, se construisent socialement.</p></div></div></div></article>
+      <article class="myth"><p class="claim">La beauté suffit pour monter dans l'échelle sociale.</p>
+        <button class="go" aria-expanded="false">Voir le verdict</button>
+        <div class="reveal"><div><div class="in"><span class="verdict v-mid">Vrai en partie</span><p>L'effet de halo et la prime de beauté sont réels, mais modérés. Ils s'ajoutent aux autres ressources sans les remplacer, et dépendent du contexte et de l'époque.</p></div></div></div></article>
+      <article class="myth"><p class="claim">On sait ce qu'on cherche chez un ou une partenaire.</p>
+        <button class="go" aria-expanded="false">Voir le verdict</button>
+        <div class="reveal"><div><div class="in"><span class="verdict v-mid">Pas tant</span><p>Les expériences de speed-dating montrent que les critères annoncés prédisent mal l'attirance réelle face à une personne. On se découvre souvent attiré par quelqu'un qui ne coche pas la liste.</p></div></div></div></article>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="soft">
+  <div class="wrap">
+    <div class="head narrow">
+      <div class="eyebrow">Questions fréquentes</div>
+      <h2 class="h2">Ce qu'on demande le plus</h2>
+    </div>
+    <div class="xl">
+      <div class="xi"><button class="xb" aria-expanded="false"><h3>Hypergamie, c'est chercher l'argent&nbsp;?</h3><span class="pm"></span></button>
+        <div class="reveal"><div><div class="in"><p>Pas seulement. Le mot décrit un <strong>écart de rang</strong>, et le rang peut se mesurer par l'argent, le diplôme, la profession ou l'origine. Un couple peut être hypergame sur le diplôme et homogame sur le revenu.</p></div></div></div></div>
+      <div class="xi"><button class="xb" aria-expanded="false"><h3>Est-ce un jugement moral&nbsp;?</h3><span class="pm"></span></button>
+        <div class="reveal"><div><div class="in"><p>Non. C'est un outil de description statistique. Il parle de tendances sur de grands nombres, jamais d'un couple en particulier. Utilisé à l'emporte-pièce, il peut devenir un stéréotype&nbsp;: mieux vaut s'en tenir à ce que les données montrent.</p></div></div></div></div>
+      <div class="xi"><button class="xb" aria-expanded="false"><h3>Pourquoi les couples se ressemblent-ils autant&nbsp;?</h3><span class="pm"></span></button>
+        <div class="reveal"><div><div class="in"><p>Quatre raisons se cumulent&nbsp;: on rencontre surtout des gens de son milieu, on partage leurs codes, on s'autosélectionne pour éviter le refus, et les familles encouragent parfois les unions proches. C'est l'<strong>homogamie</strong>, la règle la plus répandue.</p></div></div></div></div>
+      <div class="xi"><button class="xb" aria-expanded="false"><h3>Les applis de rencontre ont-elles changé la donne&nbsp;?</h3><span class="pm"></span></button>
+        <div class="reveal"><div><div class="in"><p>Elles élargissent le nombre de profils visibles, mais les données disponibles montrent que les couples formés restent assortis par l'âge, le diplôme et l'attrait perçu. Le tri a surtout changé de forme&nbsp;: il passe par les photos et les filtres.</p></div></div></div></div>
+      <div class="xi"><button class="xb" aria-expanded="false"><h3>D'où vient l'idée que les moins beaux «&nbsp;visent plus haut&nbsp;»&nbsp;?</h3><span class="pm"></span></button>
+        <div class="reveal"><div><div class="in"><p>Trois ressorts se combinent. D'abord, tout le monde préfère l'attrait&nbsp;: on le voit, et on l'attribue à tort à un groupe précis. Ensuite, les couples à fort écart de beauté attirent le regard et marquent la mémoire, alors que les couples assortis passent inaperçus. Enfin, on y ajoute un vieux récit, celui de l'échange «&nbsp;beauté contre statut&nbsp;», qui existe mais reste une tendance modeste.</p></div></div></div></div>
+      <div class="xi"><button class="xb" aria-expanded="false"><h3>Peut-on mesurer l'hypergamie soi-même&nbsp;?</h3><span class="pm"></span></button>
+        <div class="reveal"><div><div class="in"><p>Oui, dans des données de couples. On choisit une grille (diplôme, par exemple), on compare chaque personne à son ou sa partenaire, puis on compte les cas où l'un dépasse l'autre. Pour un couple isolé, le résultat dépend entièrement de la grille choisie&nbsp;: il ne dit rien de leurs motivations.</p></div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SOURCES -->
+<section id="sources">
+  <div class="wrap">
+    <div class="head narrow">
+      <div class="eyebrow">Sources</div>
+      <h2 class="h2">Pour vérifier et creuser</h2>
+      <p class="lede">Les références sont données sans lien. Les titres et les revues se retrouvent facilement sur un moteur de recherche académique, et il vaut mieux lire les études elles-mêmes que leur résumé.</p>
+    </div>
+    <ul class="refs">
+      <li><b>Becker, G.</b> (1973). A theory of marriage: Part I. <i>Journal of Political Economy</i>, 81(4).</li>
+      <li><b>Berscheid, E., Dion, K., Walster, E. &amp; Walster, G. W.</b> (1971). Physical attractiveness and dating choice: a test of the matching hypothesis. <i>Journal of Experimental Social Psychology</i>, 7.</li>
+      <li><b>Bertrand, M., Kamenica, E. &amp; Pan, J.</b> (2015). Gender identity and relative income within households. <i>Quarterly Journal of Economics</i>, 130(2).</li>
+      <li><b>Bourdieu, P.</b> (2002). <i>Le Bal des célibataires</i>. Seuil.</li>
+      <li><b>Bozon, M. &amp; Héran, F.</b> (2006). <i>La formation du couple</i>. La Découverte.</li>
+      <li><b>Buss, D. M.</b> (1989). Sex differences in human mate preferences: evolutionary hypotheses tested in 37 cultures. <i>Behavioral and Brain Sciences</i>, 12(1).</li>
+      <li><b>Dion, K., Berscheid, E. &amp; Walster, E.</b> (1972). What is beautiful is good. <i>Journal of Personality and Social Psychology</i>, 24(3).</li>
+      <li><b>Eagly, A. H. &amp; Wood, W.</b> (1999). The origins of sex differences in human behavior. <i>American Psychologist</i>, 54(6).</li>
+      <li><b>Eastwick, P. W. &amp; Finkel, E. J.</b> (2008). Sex differences in mate preferences revisited. <i>Journal of Personality and Social Psychology</i>, 94(2).</li>
+      <li><b>Elder, G. H.</b> (1969). Appearance and education in marriage mobility. <i>American Sociological Review</i>, 34(4).</li>
+      <li><b>Esteve, A., García-Román, J. &amp; Permanyer, I.</b> (2012). The gender-gap reversal in education and its effect on union formation. <i>Population and Development Review</i>, 38(3).</li>
+      <li><b>Esteve, A. et al.</b> (2016). The end of hypergamy: global trends and implications. <i>Population and Development Review</i>, 42(4).</li>
+      <li><b>Feingold, A.</b> (1988). Matching for attractiveness in romantic partners and same-sex friends: a meta-analysis. <i>Psychological Bulletin</i>, 104(2).</li>
+      <li><b>Gale, D. &amp; Shapley, L. S.</b> (1962). College admissions and the stability of marriage. <i>American Mathematical Monthly</i>, 69(1).</li>
+      <li><b>Hakim, C.</b> (2010). Erotic capital. <i>European Sociological Review</i>, 26(5).</li>
+      <li><b>Hamermesh, D. &amp; Biddle, J.</b> (1994). Beauty and the labor market. <i>American Economic Review</i>, 84(5).</li>
+      <li><b>Hitsch, G., Hortaçsu, A. &amp; Ariely, D.</b> (2010). Matching and sorting in online dating. <i>American Economic Review</i>, 100(1).</li>
+      <li><b>Walster, E., Aronson, V., Abrahams, D. &amp; Rottman, L.</b> (1966). Importance of physical attractiveness in dating behavior. <i>Journal of Personality and Social Psychology</i>, 4(5).</li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="big">Un concept pour décrire des tendances, pas pour juger des personnes.</p>
+    <p>Ce site est une introduction pédagogique. Il résume des travaux de sociologie, d'économie et de psychologie sociale, avec leurs nuances. Les résultats varient selon les pays, les époques et les méthodes, et aucune moyenne ne dit comment un couple réel fonctionne.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var $=function(s,r){return (r||document).querySelector(s)};
+  var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var root=document.documentElement;
+
+  /* Thème */
+  try{var t=localStorage.getItem('hg-theme'); if(t) root.setAttribute('data-theme',t);}catch(e){}
+  $('#theme').addEventListener('click',function(){
+    var cur=root.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+    var next=cur==='dark'?'light':'dark';
+    root.setAttribute('data-theme',next);
+    try{localStorage.setItem('hg-theme',next)}catch(e){}
+  });
+
+  /* Progression + menu actif */
+  var prog=$('#progress');
+  function onScroll(){
+    var h=document.documentElement.scrollHeight-innerHeight;
+    prog.style.transform='scaleX('+(h>0?Math.min(1,scrollY/h):0)+')';
+  }
+  addEventListener('scroll',onScroll,{passive:true}); onScroll();
+  var secs=$$('main section');
+  var links={};
+  $$('.links a').forEach(function(a){links[a.getAttribute('href').slice(1)]=a});
+  if('IntersectionObserver' in window){
+    var spy=new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting && links[e.target.id]){
+          Object.keys(links).forEach(function(k){links[k].classList.remove('on')});
+          links[e.target.id].classList.add('on');
+          links[e.target.id].scrollIntoView({block:'nearest',inline:'center'});
+        }
+      });
+    },{rootMargin:'-45% 0px -50% 0px'});
+    secs.forEach(function(s){spy.observe(s)});
+    var tio=new IntersectionObserver(function(es){
+      es.forEach(function(e){e.target.classList.toggle('on',e.isIntersecting)});
+    },{rootMargin:'-40% 0px -50% 0px'});
+    $$('.ti').forEach(function(i){tio.observe(i)});
+  }
+
+  /* Bulles de dialogue */
+  $$('[data-group]').forEach(function(group){
+    var bubble=$('.bubble',group), body=$('.bubble-body',bubble), tail=$('.tail',bubble);
+    var chips=$$('[data-target]',group), active=null;
+    function place(){
+      if(!active||bubble.hidden) return;
+      var c=active.getBoundingClientRect(), b=bubble.getBoundingClientRect();
+      var x=c.left+c.width/2-b.left;
+      tail.style.left=Math.max(32,Math.min(b.width-32,x))+'px';
+    }
+    function close(){
+      chips.forEach(function(c){c.setAttribute('aria-expanded','false')});
+      bubble.hidden=true; active=null;
+    }
+    chips.forEach(function(chip){
+      chip.addEventListener('click',function(){
+        if(active===chip){close();return;}
+        active=chip;
+        chips.forEach(function(c){c.setAttribute('aria-expanded',String(c===chip))});
+        body.innerHTML=document.getElementById(chip.dataset.target).innerHTML;
+        bubble.hidden=false;
+        bubble.classList.remove('pop'); void bubble.offsetWidth; bubble.classList.add('pop');
+        place();
+        var r=bubble.getBoundingClientRect();
+        if(r.bottom>innerHeight-12||r.top<70){bubble.scrollIntoView({block:'nearest',behavior:reduce?'auto':'smooth'});}
+      });
+    });
+    $('.bx',bubble).addEventListener('click',function(){var a=active; close(); if(a) a.focus();});
+    group.addEventListener('keydown',function(e){if(e.key==='Escape'&&active){var a=active; close(); a.focus();}});
+    addEventListener('resize',place);
+  });
+
+  /* Lignes dépliables */
+  $$('.xb, .myth .go').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var open=btn.getAttribute('aria-expanded')==='true';
+      btn.setAttribute('aria-expanded',String(!open));
+      var rev=btn.nextElementSibling;
+      while(rev && !rev.classList.contains('reveal')) rev=rev.nextElementSibling;
+      if(rev) rev.classList.toggle('open',!open);
+      if(btn.classList.contains('go')) btn.textContent=open?'Voir le verdict':'Masquer';
+    });
+  });
+  // .xb contient le .reveal en élément suivant
+  /* Schéma hyper / homo / hypo */
+  var D={
+    hyper:{a:250,b:70,t:'Hypergamie',p:'A s’unit à une personne de rang supérieur. Du point de vue de A, c’est une ascension.',x:'Exemple : un infirmier épouse une cheffe de service. Sur la grille du diplôme et du revenu, B est au-dessus.'},
+    homo:{a:160,b:160,t:'Homogamie',p:'A et B ont à peu près la même position sur la grille choisie. C’est le cas le plus fréquent dans les faits.',x:'Exemple : deux enseignants qui se sont rencontrés à l’université. Même diplôme, même milieu, mêmes lieux de rencontre.'},
+    hypo:{a:70,b:250,t:'Hypogamie',p:'A s’unit à une personne de rang inférieur sur la grille retenue. C’est le miroir exact de l’hypergamie : la même union, vue de l’autre côté.',x:'Exemple : une avocate associée et un menuisier indépendant. Sur le critère du diplôme, B est en dessous. Sur d’autres critères, la lecture pourrait changer.'}
+  };
+  var cur={a:250,b:70}, ga=$('#ga'), gb=$('#gb'), dl=$('#dlink'), dm=$('#dmid');
+  var XA=150, XB=370;
+  function draw(){
+    ga.setAttribute('transform','translate('+XA+','+cur.a+')');
+    gb.setAttribute('transform','translate('+XB+','+cur.b+')');
+    var x1=XA+34,x2=XB-34;
+    dl.setAttribute('d','M'+x1+' '+cur.a+' C '+(x1+60)+' '+cur.a+', '+(x2-60)+' '+cur.b+', '+x2+' '+cur.b);
+    dm.setAttribute('cx',(x1+x2)/2); dm.setAttribute('cy',(cur.a+cur.b)/2);
+  }
+  var raf=0;
+  function setDir(k){
+    var d=D[k];
+    $$('.seg button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.d===k))});
+    $('#dt').textContent=d.t; $('#dp').textContent=d.p; $('#dx').textContent=d.x;
+    var a0=cur.a,b0=cur.b,t0=performance.now(),dur=reduce?1:600;
+    cancelAnimationFrame(raf);
+    (function step(t){
+      var k2=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-k2,3);
+      cur.a=a0+(d.a-a0)*e; cur.b=b0+(d.b-b0)*e; draw();
+      if(k2<1) raf=requestAnimationFrame(step);
+    })(t0);
+  }
+  $$('.seg button').forEach(function(b){b.addEventListener('click',function(){setDir(b.dataset.d)})});
+  draw(); setDir('hyper');
+
+  /* Simulateur Gale-Shapley */
+  var N=8, seed=20261029, svg=$('#mk'), sig=$('#sigma');
+  function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+  var base=null;
+  function makeBase(){
+    var r=mulberry(seed);
+    function gauss(){var u=0;while(!u)u=r();var v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)}
+    var A=[],B=[],i;
+    for(i=0;i<N;i++){A.push({s:Math.round(15+r()*80)});B.push({s:Math.round(15+r()*80)});}
+    // bruit fixe par paire, mis à l'échelle ensuite par le curseur
+    var nA=[],nB=[];
+    for(i=0;i<N;i++){nA.push([]);nB.push([]);for(var j=0;j<N;j++){nA[i].push(gauss());nB[i].push(gauss());}}
+    base={A:A,B:B,nA:nA,nB:nB};
+  }
+  function solve(sigma){
+    var A=base.A,B=base.B,i,j;
+    var pref=A.map(function(a,ai){
+      return B.map(function(b,bi){return {j:bi,v:b.s+base.nA[ai][bi]*sigma}}).sort(function(x,y){return y.v-x.v}).map(function(x){return x.j});
+    });
+    var val=B.map(function(b,bi){return A.map(function(a,ai){return a.s+base.nB[bi][ai]*sigma})});
+    var next=[],holder=[],match=[],free=[];
+    for(i=0;i<N;i++){next.push(0);holder.push(-1);match.push(-1);free.push(i)}
+    while(free.length){
+      var a=free.pop(), jj=pref[a][next[a]++];
+      if(holder[jj]<0){holder[jj]=a;match[a]=jj}
+      else{
+        var c=holder[jj];
+        if(val[jj][a]>val[jj][c]){holder[jj]=a;match[a]=jj;match[c]=-1;free.push(c)}
+        else free.push(a);
+      }
+    }
+    return match;
+  }
+  function render(){
+    var sigma=+sig.value; $('#sv').textContent=sigma;
+    var A=base.A,B=base.B, match=solve(sigma);
+    var oa=A.map(function(_,i){return i}).sort(function(x,y){return A[y].s-A[x].s});
+    var ob=B.map(function(_,i){return i}).sort(function(x,y){return B[y].s-B[x].s});
+    var ya={},yb={},top=62,step=(400-62-34)/(N-1);
+    oa.forEach(function(id,k){ya[id]=top+k*step});
+    ob.forEach(function(id,k){yb[id]=top+k*step});
+    var XL=62,XR=358,R=18,h='';
+    h+='<text class="gl" x="'+XL+'" y="24">Groupe A</text><text class="gl" x="'+XR+'" y="24">Groupe B</text>';
+    h+='<text class="gl" x="'+XL+'" y="40" style="font-size:10px">+ attirant</text><text class="gl" x="'+XR+'" y="40" style="font-size:10px">+ attirant</text>';
+    var sum=0,up=0,down=0,lines='';
+    A.forEach(function(a,i){
+      var j=match[i], gap=B[j].s-a.s; sum+=Math.abs(gap);
+      if(gap>3)up++; else if(gap<-3)down++;
+      var ag=Math.abs(gap), w=ag>=15?2.6:1.8, col=ag>=15?'var(--accent)':'var(--ink-2)', op=ag>=15?1:.45;
+      var y1=ya[i],y2=yb[j],mx=(XL+XR)/2;
+      lines+='<path d="M'+(XL+R)+' '+y1+' C '+mx+' '+y1+', '+mx+' '+y2+', '+(XR-R)+' '+y2+'" fill="none" stroke="'+col+'" stroke-width="'+w+'" stroke-linecap="round" opacity="'+op+'"/>';
+    });
+    h+=lines;
+    A.forEach(function(a,i){h+='<circle class="c1" cx="'+XL+'" cy="'+ya[i]+'" r="'+R+'"/><text class="sc" x="'+XL+'" y="'+(ya[i]+4)+'">'+a.s+'</text>'});
+    B.forEach(function(b,j){h+='<circle class="c2" cx="'+XR+'" cy="'+yb[j]+'" r="'+R+'"/><text class="sc" x="'+XR+'" y="'+(yb[j]+4)+'">'+b.s+'</text>'});
+    svg.innerHTML=h;
+    $('#s1').textContent=(sum/N).toFixed(1).replace('.',',');
+    $('#s2').textContent=up+' / '+N; $('#s3').textContent=down+' / '+N;
+    var msg;
+    if(sigma===0) msg='<b>Tout le monde veut les mêmes personnes.</b> Pourtant, chacun finit avec quelqu’un de rang quasi identique : les plus recherchés choisissent, les autres se rangent par ordre. Les traits restent presque horizontaux.';
+    else if(sigma<=15) msg='<b>Les goûts divergent un peu.</b> Quelques couples s’écartent de la ligne droite, mais l’ensemble reste très assorti.';
+    else if(sigma<=28) msg='<b>Les goûts se diversifient.</b> Des écarts plus nets apparaissent, dans les deux sens : certains gagnent en valeur, d’autres en perdent.';
+    else msg='<b>Les goûts sont très différents.</b> Les écarts se multiplient, mais ils profitent autant aux uns qu’aux autres. Un trait rose signale un écart de 15 points ou plus.';
+    $('#simread').innerHTML=msg;
+  }
+  makeBase(); render();
+  sig.addEventListener('input',render);
+  $('#redo').addEventListener('click',function(){seed=Math.floor(Math.random()*1e9);makeBase();render()});
+
+  /* Quiz */
+  var Q=[
+    {t:'Samir, infirmier, épouse Claire, chirurgienne.',pov:'Point de vue : Samir.',a:'hyper',why:'Claire a un diplôme, un prestige et un revenu supérieurs aux siens : c’est de l’<strong>hypergamie</strong> pour Samir, et de l’hypogamie pour Claire.'},
+    {t:'Léa et Hugo, tous deux professeurs, se sont rencontrés pendant leurs études.',pov:'Point de vue : Léa.',a:'homo',why:'Même diplôme, même milieu, même lieu de rencontre. C’est l’<strong>homogamie</strong>, le cas le plus fréquent.'},
+    {t:'Nadia, avocate associée, vit avec Théo, menuisier indépendant.',pov:'Point de vue : Nadia.',a:'hypo',why:'Sur la grille du diplôme, Théo est en dessous : <strong>hypogamie</strong> pour Nadia. Sur d’autres grilles (revenu, goûts, valeurs), la lecture pourrait changer.'},
+    {t:'Julien, fils d’ouvrier, épouse Constance, fille d’un chef d’entreprise.',pov:'Point de vue : Julien. Grille : l’origine sociale.',a:'hyper',why:'Julien monte par l’union : c’est le schéma de Julien Sorel chez Stendhal. <strong>Hypergamie</strong>.'},
+    {t:'Inès et Karim sont cadres, tous deux issus de familles de classes moyennes.',pov:'Point de vue : Inès.',a:'homo',why:'Position et origine proches : <strong>homogamie</strong>.'},
+    {t:'Marc, cadre dirigeant, se met en couple avec Élise, étudiante en BTS issue d’un milieu modeste.',pov:'Point de vue : Marc.',a:'hypo',why:'<strong>Hypogamie</strong> pour Marc. Vue d’Élise, la même union est de l’hypergamie : un même couple, deux lectures.'}
+  ];
+  var L={hyper:'Hypergamie',homo:'Homogamie',hypo:'Hypogamie'};
+  var qb=$('#quizbox'), qi=0, score=0;
+  function showQ(){
+    var q=Q[qi];
+    qb.innerHTML='<div class="qtop"><span>Question '+(qi+1)+' sur '+Q.length+'</span><span>Score '+score+'</span></div>'+
+      '<div class="qbar"><i style="width:'+(qi/Q.length*100)+'%"></i></div>'+
+      '<p class="qtext">'+q.t+'</p><p class="qpov">'+q.pov+'</p>'+
+      '<div class="qbtns">'+Object.keys(L).map(function(k){return '<button class="chip" data-k="'+k+'">'+L[k]+'</button>'}).join('')+'</div>'+
+      '<div id="qfb" aria-live="polite"></div>';
+    $$('.qbtns .chip',qb).forEach(function(b){b.addEventListener('click',function(){answer(b)})});
+  }
+  function answer(b){
+    var q=Q[qi], ok=b.dataset.k===q.a;
+    if(ok) score++;
+    $$('.qbtns .chip',qb).forEach(function(x){
+      x.disabled=true;
+      if(x.dataset.k===q.a) x.classList.add('good');
+      else if(x===b) x.classList.add('bad');
+    });
+    $('#qfb',qb).innerHTML='<div class="qfb"><strong>'+(ok?'Bien vu.':'Pas tout à fait.')+'</strong> '+q.why+'</div>'+
+      '<button class="btn solid qnext" id="qn">'+(qi===Q.length-1?'Voir mon score':'Question suivante')+'</button>';
+    $('#qn').addEventListener('click',function(){qi++; if(qi<Q.length) showQ(); else endQ();});
+    $('#qn').focus({preventScroll:true});
+  }
+  function endQ(){
+    var m=score>=5?'Tu maîtrises le vocabulaire.':score>=3?'Bon début : la grille choisie change souvent la réponse.':'Pas de souci : le sens dépend toujours de la grille retenue.';
+    qb.innerHTML='<div class="qend"><div class="score">'+score+'/'+Q.length+'</div><p class="qfb" style="margin-top:1.2rem">'+m+'</p><button class="btn solid qnext" id="qr">Rejouer</button></div>';
+    $('#qr').addEventListener('click',function(){qi=0;score=0;showQ()});
+  }
+  showQ();
+})();
+</script>
+
+</body></html>
